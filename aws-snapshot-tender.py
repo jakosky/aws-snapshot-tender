@@ -38,6 +38,7 @@ def ec2_data_into_superstructure(region, credentials, tagname):
       Add this to a global list.
   '''
   global superstructure
+  superstructure = []
   conn = boto.ec2.connect_to_region(region, **credentials)
   snapshots = conn.get_all_snapshots(owner='self')
   logging.info("Snapshots: Fetched %s snapshots." % len(snapshots))
@@ -298,7 +299,7 @@ if __name__ == "__main__":
     credentials['profile_name']=args.profile
 
   for region in args.regions:
-    logging.info("Fetching volumes, instances and snapshots...")
+    logging.info("Fetching volumes, instances and snapshots for region %s ..." % region)
     ec2_data_into_superstructure(region, credentials, args.tag)
     if args.create:
       create_snapshots(args.time, args.dry_run)
